@@ -1,0 +1,75 @@
+.main{
+    text-align: center;
+    line-height: 200%;
+    color: rgb(241, 7, 7);
+    border: 1em;
+}
+body{
+    background-image: url("../images/background.jpg");
+    background:center/180% url("../images/background.jpg");
+}
+h1{
+    font-size: 16px ;
+    position: relative;
+    background: #ebe5ea;
+    background-size: 10%;
+    /* width: 50%; */
+    /* left: 25%; */
+    text-align: center;
+    padding: 1%;
+    margin: 0 0 3em;
+    opacity: 0.7;
+}
+li{
+    font-size: 2em ;
+    list-style-type: none;
+    position: relative;
+    background: #ebe5ea;
+    background-size: 10%;
+    /* width: 50%; */
+    /* left: 25%; */
+    text-align: center;
+    padding: 1%;
+    margin: 0 1em 1em;
+    opacity: 0.7;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 50%;
+}
+label{
+    font-size: 2em ;
+    color: rgb(192, 6, 6);
+    background: #ffffff;
+    padding: 1%;
+    margin: 0 0 1em;
+    opacity: 0.7;
+}
+
+.guesses{
+     /* visibility: hidden;
+    position: relative;
+    color: rgb(194, 9, 9);
+     padding: 1%;
+     margin: 1%; */
+     font-size: 2em ;
+    list-style-type: none;
+    position: relative;
+    background: #ebe5ea;
+    background-size: 10%;
+    /* width: 50%; */
+    /* left: 25%; */
+    text-align: center;
+    padding: 1%;
+    margin: 1em 1em 1em;
+    opacity: 0.7;
+
+}
+.rule{
+
+}
+
+input{
+    color: rgb(134, 14, 14);
+}
