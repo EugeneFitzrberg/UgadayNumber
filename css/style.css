@@ -1,75 +1,143 @@
-.main{
-    text-align: center;
-    line-height: 200%;
-    color: rgb(241, 7, 7);
-    border: 1em;
-}
-body{
-    background-image: url("../images/background.jpg");
-    background:center/180% url("../images/background.jpg");
-}
-h1{
-    font-size: 16px ;
-    position: relative;
-    background: #ebe5ea;
-    background-size: 10%;
-    /* width: 50%; */
-    /* left: 25%; */
-    text-align: center;
-    padding: 1%;
-    margin: 0 0 3em;
-    opacity: 0.7;
-}
-li{
-    font-size: 2em ;
-    list-style-type: none;
-    position: relative;
-    background: #ebe5ea;
-    background-size: 10%;
-    /* width: 50%; */
-    /* left: 25%; */
-    text-align: center;
-    padding: 1%;
-    margin: 0 1em 1em;
-    opacity: 0.7;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.disabled {
-    pointer-events: none;
-    opacity: 50%;
-}
-label{
-    font-size: 2em ;
-    color: rgb(192, 6, 6);
-    background: #ffffff;
-    padding: 1%;
-    margin: 0 0 1em;
-    opacity: 0.7;
+body {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: url('../img/background.jpg') no-repeat top center/cover;
 }
 
-.guesses{
-     /* visibility: hidden;
-    position: relative;
-    color: rgb(194, 9, 9);
-     padding: 1%;
-     margin: 1%; */
-     font-size: 2em ;
-    list-style-type: none;
-    position: relative;
-    background: #ebe5ea;
-    background-size: 10%;
-    /* width: 50%; */
-    /* left: 25%; */
-    text-align: center;
-    padding: 1%;
-    margin: 1em 1em 1em;
-    opacity: 0.7;
+.container {
+  width: 80%;
+  height: 100%;
+  margin: 0 auto;
 
-}
-.rule{
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-input{
-    color: rgb(134, 14, 14);
+.title {
+  width: 40%;
+  padding: 10px 0;
+  text-align: center;
+  background-color: #bebebe;
+  border-radius: 6px;
+}
+
+.section {
+  width: 40%;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 6px;
+  background-color: #bebebe;
+  text-align: center;
+}
+
+.section h4 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.section p {
+  font-size: 18px;
+}
+
+form {
+  width: 40%;
+  margin-top: 20px;
+  padding: 20px;
+  text-align: center;
+  border-radius: 6px;
+  background-color: #bebebe;
+  
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+form input {
+  outline: none;
+  height: 30px;
+  width: 200px;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+form button {
+  cursor: pointer;
+  width: 200px;
+  height: 30px;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: .2s;
+}
+
+form button:hover {
+  background-color: #a0ecff;
+}
+
+.input-rez {
+  width: 40%;
+  font-size: 16px;
+  margin-top: 20px;
+  padding: 20px;
+  text-align: center;
+  border-radius: 6px;
+  background-color: #bebebe;
+}
+
+@media (max-width: 1030px)  {
+    .container {
+      width: 600px;
+    }
+
+    form,
+  .title,
+  .section,
+  .input-rez {
+    width: 80%;
+  }
+}
+
+@media (max-width: 425px) {
+  .container {
+    width: 400px;
+  }
+
+  form,
+  .title,
+  .section,
+  .input-rez {
+    width: 80%;
+  }
+}
+
+@media (max-width: 320px) {
+  .container {
+    width: 280px;
+  }
+
+  form,
+  .title,
+  .section,
+  .input-rez {
+    width: 100%;
+  }
 }

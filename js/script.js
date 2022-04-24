@@ -1,109 +1,101 @@
-﻿window.onload = start();
+window.addEventListener('DOMContentLoaded', () => {
 
-var first;
-var second;
-var guessCount;
+    function enc(num, guid = 3) {
+        let old = 0;
+        let fib_old = 0;
+        let data = [];
+        let i = 0;
+        num = String(num);
+        let len = num.length;
+        let chr = num.split('');
 
-var guessBtn;
-var guesses;
-var resetBtn;
-
-var tryCount;
-var randomNumber;
-
-var text;
-var item;
-var rule;
-
-
-function start(){
-    first = 1;
-    second = 100;
-
-    text = document.getElementById("text");
-    guessBtn = document.getElementById("guessBtn");
-    resetBtn = document.getElementById("resetBtn");
-    rule = document.getElementsByClassName("rule");
-    guesses = document.getElementsByClassName("guesses");
-    document.getElementById("textField").addEventListener("keyup", function(event) {
-        if (event.keyCode === 13) {
-            check();
+        while (i < len) {
+            fib_old = guid;
+            guid = guid + old;
+            data.push((+chr[i] + guid) + (guid * +chr[i]));
+            old = fib_old;
+            i++;
         }
-    });
-    rule[0].innerHTML += "Диапазон от " +first + " до "+ second + ".";
-    rule[0].innerHTML += " Количество попыток " + Math.ceil(Math.log2(second - first +1));
-    refrator();
-}
-function refrator() {
 
-    guesses[0].innerHTML = "------";
-    guessBtn.classList.remove("disabled");
-    document.getElementById("textField").classList.remove("disabled");
-    guessCount = 0;
-    randomNumber = Math.floor(Math.random() * second) + first;
-    tryCount = Math.ceil(Math.log2(second - first +1));
-   
-    text.innerHTML = "Новая игра! Введите первое число! ";
-    document.getElementById("textField").focus();
-    document.getElementById("textField").value = null;
-}
-
-
-function check() {
-    
-    item = document.getElementById("textField").value;
-    
-    // console.log(sum);
-    if (tryCount > 0) {
-        if (item >= Number(first) && item <= Number(second)) {
-            if(item > randomNumber)
-            {
-                text.innerHTML = "Загаданное число меньше " + item;
-            }
-            else{
-                text.innerHTML = "Загаданное число больше " + item;
-            }
-            console.log(item);
-            console.log(randomNumber);
-            tryCount --;
-            if (item == randomNumber) {
-                text.innerHTML = "Поздравляю" ;
-                guesses[0].innerHTML = "Вы угадали число " + Number(randomNumber);
-                setGameOver();
-                return;
-            }
-            else {
-                if (guessCount == 0) {
-                    guesses[0].innerHTML = "Предыдущие попытки " + ": ";
-                }
-                guesses[0].innerHTML += Number(item) + " ";
-                guessCount++;
-                
-            }
-        }
-        else {
-            text.innerHTML = "Число некорректно, попробуйте еще раз! ";
-          
-        }
-        if(tryCount == 0) {
-            text.innerHTML = "Попытки закончились";
-            guesses[0].innerHTML = "Задуманное число :" + Number(randomNumber);
-            setGameOver();
-        }
+        return data.join('|');
     }
-    // text.innerHTML = "У вас есть еще попытки: " + Number(sum +1);
-    document.getElementById("textField").value = null;
-}
 
-function setGameOver() {
-    let textField =  document.getElementById("textField"); 
-    textField.classList.add("disabled");
-    textField.blur();
-    document.getElementById("textField").value = null;
-    // document.getElementById("textField").blur();
-    guessBtn.classList.add("disabled");
-    resetBtn.focus();
-}
+    function dec(enc, guid = 3) {
+        let data = enc.split("|");
+        let cnt = data.length;
+        let old = 0;
+        let fib_old = 0;
+        let numbs = [];
 
+        let i = 0;
+        while (i < cnt) {
+            fib_old = guid;
+            guid = guid + old;
+            let s = +data[i];
+            numbs.push((s - guid) / (1 + guid));
+            old = fib_old;
+            i++;
+        }
 
+        return numbs.join("");
+    }
 
+    const container = document.querySelector('.container');
+
+    const minNum = 1;
+    const maxNum = 100;
+    let num = Math.trunc(Math.random() * (maxNum - minNum) + minNum);
+    let attempts = Math.ceil(Math.log2(maxNum - minNum + 1));
+
+    num = enc(num);
+
+    document.querySelector('input[name="hidden-number"]').value = num;
+    document.querySelector('input[name="count-attempt"]').value = attempts;
+    document.querySelector('input[name="max-number"]').value = maxNum;
+    document.querySelector('input[name="min-number"]').value = minNum;
+
+    document.querySelector('.rules').innerHTML = `Вам загадано число в диапазоне от ${minNum} до ${maxNum}. 
+                                                    Ваша задача будет отгадать это число за ${attempts} попыток.`;
+
+    document.forms[0].addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        if (!container.classList.contains('game_over')) {
+            const responeURL = "../check.php";
+            let body = {
+                'number': document.querySelector('input[name="number"]').value,
+                'hidden_number': document.querySelector('input[name="hidden-number"]').value,
+                'count_attempt': document.querySelector('input[name="count-attempt"]').value,
+                'max_number': document.querySelector('input[name="max-number"]').value,
+                'min_number': document.querySelector('input[name="min-number"]').value,
+                'game_over': false
+            };
+            
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', responeURL);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    let serverResponse = JSON.parse(xhr.responseText);
+
+                    body['hidden_number'] = dec(serverResponse['hidden_number'])
+                    document.querySelector('.input-rez').innerText = serverResponse['message'];
+                    document.querySelector('input[name="count-attempt"]').value = serverResponse['count_attempt'];
+                    document.querySelector('input[name="hidden-number"]').value = serverResponse['hidden_number'];
+
+                    if (serverResponse['game_over']) {
+                        container.classList.add('game_over');
+                        document.querySelector('.btn').focus();
+                        document.querySelector('.btn').innerHTML = 'Начать заново';
+                    }
+                }
+            }
+
+            xhr.send(JSON.stringify(body));
+
+            document.querySelector('input[name="number"]').value = '';
+        } else
+            window.location.reload()
+    });
+});
